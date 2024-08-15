@@ -13,8 +13,8 @@ data class Post(
     var author: User? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id", nullable = false)
-    var board: Board? = null,
+    @JoinColumn(name = "thread_id", nullable = false)
+    var thread: Thread? = null,
 
     val timeStamp: Long = System.currentTimeMillis(),
     var content: Content? = null

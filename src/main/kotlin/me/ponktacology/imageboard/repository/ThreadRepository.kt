@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface ThreadRepository : JpaRepository<Thread, Long> {
 
     fun findAllByBoard(board: Board): List<Thread>
+
+    fun findByBoardAndId(board: Board, id: Long): Thread?
 }
