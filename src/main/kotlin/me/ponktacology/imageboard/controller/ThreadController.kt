@@ -12,7 +12,9 @@ import me.ponktacology.imageboard.service.UserService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
+
 @RestController
+@RequestMapping("/threads")
 class ThreadController(
     private val threadRepository: ThreadRepository,
     private val boardRepository: BoardRepository,
@@ -20,7 +22,7 @@ class ThreadController(
     private val threadService: ThreadService,
 ) {
 
-    @GetMapping("/threads/{id}")
+    @GetMapping("/get/{id}")
     fun get(
         @PathVariable boardName: String,
         @PathVariable id: Long
@@ -29,18 +31,18 @@ class ThreadController(
         return threadRepository.findByBoardAndId(board, id) ?: throw ThreadNotFoundException(board.name, id)
     }
 
-    @GetMapping("/threads/{boardName}/all")
-    fun getAll(@PathVariable boardName: String): List<Thread> {
+    @GetMapping("/all/{boardName}")
+    fun all(@PathVariable boardName: String): List<Thread> {
         val board = boardRepository.findByName(boardName) ?: throw BoardNotFoundException(boardName)
         return threadRepository.findAllByBoard(board)
     }
 
     @PostMapping(
-        "/threads/{boardName}",
+        "/put/{boardName}",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun add(
+    fun put(
         request: HttpServletRequest,
         @PathVariable boardName: String,
         @RequestBody threadDTO: ThreadPutDTO
@@ -54,11 +56,5 @@ class ThreadController(
             threadDTO.title,
             threadDTO.content
         )
-    }
-
-    @GetMapping("/threads/{name}")
-    fun threads(@PathVariable name: String): List<Thread> {
-        val board = boardRepository.findByName(name) ?: throw BoardNotFoundException(name)
-        return threadRepository.findAllByBoard(board)
     }
 }

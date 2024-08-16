@@ -14,6 +14,7 @@ import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/posts")
 class PostController(
     private val threadRepository: ThreadRepository,
     private val boardRepository: BoardRepository,
@@ -22,8 +23,8 @@ class PostController(
     private val postService: PostService,
 ) {
 
-    @GetMapping("/posts/{boardName}/{threadId}")
-    fun getAll(@PathVariable boardName: String, @PathVariable threadId: Long): List<Post> {
+    @GetMapping("/get/{boardName}/{threadId}")
+    fun get(@PathVariable boardName: String, @PathVariable threadId: Long): List<Post> {
         val board = boardRepository.findByName(boardName) ?: throw BoardNotFoundException(boardName)
         val thread =
             threadRepository.findByBoardAndId(board, threadId) ?: throw ThreadNotFoundException(board.name, threadId)
@@ -31,7 +32,7 @@ class PostController(
     }
 
     @PostMapping(
-        "/posts/{boardName}/{threadId}",
+        "/put/{boardName}/{threadId}",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
