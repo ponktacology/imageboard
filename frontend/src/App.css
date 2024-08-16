@@ -1,38 +1,181 @@
-.App {
-  text-align: center;
+/* App.css */
+
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Board Styles */
+.board {
+  margin-bottom: 30px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Thread Styles */
+.thread {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  background-color: #fff;
+}
+
+.thread h1 {
+  font-size: 20px;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.thread p {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.thread a {
+  display: block;
+  font-size: 14px;
+  color: #1e90ff;
+  margin: 10px 0;
+}
+
+.thread button {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.thread button:hover {
+  background-color: #0056b3;
+}
+
+.comments {
+  margin-top: 15px;
+  padding-left: 20px;
+}
+
+.comments ul {
+  padding: 0;
+  list-style: none;
+}
+
+.comments li {
+  margin-bottom: 10px;
+}
+
+/* Comment Styles */
+.comment {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fafafa;
+}
+
+.comment p {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.comment a {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Create Comment/Thread Form Styles */
+.createComment, .createThread {
+  margin-bottom: 30px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fff;
+}
+
+.createComment h1, .createThread h1 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.createComment form, .createThread form {
   display: flex;
   flex-direction: column;
+}
+
+.createComment label, .createThread label {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.createComment input, .createThread input {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.createComment button, .createThread button {
+  background-color: #28a745;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  align-self: flex-start;
+}
+
+.createComment button:disabled, .createThread button:disabled {
+  background-color: #ccc;
+}
+
+.createComment button:hover:not(:disabled), .createThread button:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  padding: 10px 20px;
+  background-color: #007bff;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.navbar-links li {
+  display: inline;
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.navbar-links a:hover {
+  color: #ffdd57;
 }
