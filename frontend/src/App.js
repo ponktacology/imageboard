@@ -8,6 +8,62 @@ function CommentRow({comment}) {
     </div>)
 }
 
+function CreateCommentRow({board, thread, onCommentCreated}) {
+    const [uploading, setUploading] = useState(false)
+    const [error, setError] = useState(null)
+    const [content, setContent] = useState('')
+
+    const submit = async () => {
+        setUploading(true)
+        setError(null)
+
+        let json = JSON.stringify({
+            "content": {
+                text: content
+            }
+        })
+
+        try {
+            const response = await fetch(`http://localhost:8080/posts/put/${board.id}/${thread.id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: json,
+            })
+            if (!response.ok) {
+                throw new Error(await response.text());
+            }
+            const data = await response.json();
+            setContent('')
+            onCommentCreated(data)
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setUploading(false);
+        }
+    }
+
+    return <div className="createComment">
+        {uploading && <p>Uploading...</p>}
+        {error && <p>Error: {error}</p>}
+
+        <h1>Add comment</h1>
+        <form>
+            <label>Content: <input
+                type="text"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                required
+            /></label>
+            <button onClick={submit} type="submit" disabled={uploading}>
+                {uploading ? 'Submitting...' : 'Submit'}
+            </button>
+        </form>
+
+    </div>
+}
+
 function ThreadRow({board, thread}) {
     const [showComments, setShowComments] = useState(false);
     const [comments, setComments] = useState([]);
@@ -29,6 +85,14 @@ function ThreadRow({board, thread}) {
             setError(err.message);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const addCommentToList = (newComment) => {
+        setComments(prevComments => [...prevComments, newComment]); // Prepend the new thread
+        if (!showComments) {
+            setShowComments(true)
+            fetchComments()
         }
     };
 
@@ -64,6 +128,8 @@ function ThreadRow({board, thread}) {
                     )}
                 </div>
             )}
+
+            <CreateCommentRow key={thread.id} thread={thread} board={board} onCommentCreated={addCommentToList}/>
         </div>
     );
 }
@@ -104,6 +170,7 @@ function CreateThreadRow({board, onThreadCreated}) {
             setUploading(false);
         }
     }
+
 
     return <div className="createThread">
         {uploading && <p>Uploading...</p>}
