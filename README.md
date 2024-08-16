@@ -5,5 +5,5 @@
  * JPA
  * H2
 
-## React: ##
+## Frontend: ##
  * React
