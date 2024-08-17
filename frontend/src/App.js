@@ -95,7 +95,7 @@ function ThreadRow({board, thread}) {
     };
 
     const addCommentToList = (newComment) => {
-        setComments(prevComments => [...prevComments, newComment]); // Prepend the new thread
+        setComments(prevComments => [...prevComments, newComment]);
         if (!showComments) {
             setShowComments(true)
             fetchComments()
@@ -227,7 +227,7 @@ function Board({board}) {
     }
 
     const addThreadToList = (newThread) => {
-        setThreads(prevThreads => [newThread, ...prevThreads]); // Prepend the new thread
+        setThreads(prevThreads => [newThread, ...prevThreads]);
     };
 
     useEffect(() => {
