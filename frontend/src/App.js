@@ -256,8 +256,8 @@ function NavBar({boards}) {
     return (
         <nav className="navbar">
             <ul className="navbar-links">
-                {boards.map((comment, index) => (
-                    <li><a href={comment.name}> {comment.name}</a></li>
+                {boards.map((board, index) => (
+                    <li key={board.name}><a href={`/${board.name}`}> {board.name}</a></li>
                 ))}
             </ul>
         </nav>
@@ -316,7 +316,8 @@ function Site() {
 
     console.log(boards.length)
     console.log(boards)
-    if (id === undefined || !boards.some(board => board.name === id)) {
+
+    if (!loading && (id === undefined || !boards.some(board => board.name === id))) {
         return <NotFound/>
     }
 
