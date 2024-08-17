@@ -1,5 +1,11 @@
 import './App.css';
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
+import {
+    createBrowserRouter,
+    createRoutesFromElements,
+    Route,
+    RouterProvider, useParams,
+} from "react-router-dom";
 
 function CommentRow({comment}) {
     return (<div className="comment">
@@ -24,7 +30,7 @@ function CreateCommentRow({board, thread, onCommentCreated}) {
         })
 
         try {
-            const response = await fetch(`http://localhost:8080/posts/put/${board.id}/${thread.id}`, {
+            const response = await fetch(`http://localhost:8080/posts/put/${board.name}/${thread.id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,7 +81,7 @@ function ThreadRow({board, thread}) {
         setError(null);
 
         try {
-            const response = await fetch(`http://localhost:8080/posts/get/${board.id}/${thread.id}`);
+            const response = await fetch(`http://localhost:8080/posts/get/${board.name}/${thread.id}`);
             if (response.ok) {
                 const data = await response.json();
                 setComments(data);
@@ -152,7 +158,7 @@ function CreateThreadRow({board, onThreadCreated}) {
         })
 
         try {
-            const response = await fetch(`http://localhost:8080/threads/put/${board.id}`, {
+            const response = await fetch(`http://localhost:8080/threads/put/${board.name}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -208,7 +214,7 @@ function Board({board}) {
         setError(null)
 
         try {
-            const response = await fetch(`http://localhost:8080/threads/all/${board.id}`);
+            const response = await fetch(`http://localhost:8080/threads/all/${board.name}`);
             if (response.ok) {
                 const data = await response.json();
                 setThreads(data);
@@ -246,32 +252,79 @@ function Board({board}) {
     );
 }
 
-function NavBar() {
+function NavBar({boards}) {
     return (
         <nav className="navbar">
-            <div className="navbar-logo">
-                <a href="/">MyApp</a>
-            </div>
             <ul className="navbar-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/about">About</a></li>
-                <li><a href="/services">Services</a></li>
-                <li><a href="/contact">Contact</a></li>
+                {boards.map((comment, index) => (
+                    <li><a href={comment.name}> {comment.name}</a></li>
+                ))}
             </ul>
         </nav>
     );
 }
 
-const BOARD =
-    {
-        id: "test"
-    }
-
+function NotFound() {
+    return (
+        <div>
+            <h1>404 - Page Not Found</h1>
+            <p>The page you're looking for doesn't exist.</p>
+        </div>
+    );
+}
 
 function App() {
+    const router = createBrowserRouter(
+        createRoutesFromElements(
+            <Route path="/:id" element={<Site/>}>
+            </Route>
+        )
+    );
+
+    return <RouterProvider router={router}/>;
+}
+
+
+function Site() {
+    const [boards, setBoards] = useState([])
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const fetchBoards = async () => {
+        setLoading(true)
+        setError(null)
+
+        try {
+            const response = await fetch(`http://localhost:8080/boards/all`);
+            if (response.ok) {
+                const data = await response.json();
+                setBoards(data);
+            }
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchBoards()
+    }, []);
+
+    let {id} = useParams()
+    let board = {name: id}
+
+    console.log(boards.length)
+    console.log(boards)
+    if (id === undefined || !boards.some(board => board.name === id)) {
+        return <NotFound/>
+    }
+
     return <div>
-        <NavBar/>
-        <Board board={BOARD}/>
+        {loading && 'Loading...'}
+        {error && `Error: ${error}`}
+        <NavBar boards={boards}/>
+        <Board board={board}/>
     </div>
 }
 
