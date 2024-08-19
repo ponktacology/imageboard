@@ -169,6 +169,8 @@ function CreateThreadRow({board, onThreadCreated}) {
                 throw new Error(await response.text());
             }
             const data = await response.json();
+            setContent('')
+            setTitle('')
             onThreadCreated(data)
         } catch (err) {
             setError(err.message);

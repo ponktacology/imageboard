@@ -21,9 +21,10 @@ class LoadDatabase {
         postRepository: PostRepository
     ): CommandLineRunner {
         return CommandLineRunner { _ ->
+            boardRepository.save(Board(name = "a"))
             boardRepository.save(Board(name = "b"))
-            boardRepository.save(Board(name = "sp"))
-            boardRepository.save(Board(name = "fz"))
+            boardRepository.save(Board(name = "c"))
+            boardRepository.save(Board(name = "d"))
         }
     }
 
